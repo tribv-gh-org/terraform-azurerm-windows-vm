@@ -1,13 +1,12 @@
-resource "azurerm_resource_group" "rg"{
+data "azurerm_resource_group" "rg"{
     name     = "rg-ethan-vm-2023"
-    location = "West Europe"
 }
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "my_terraform_nsg" {
   name                = "ethanNetworkSecurityGroup"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
 
   # security_rule {
   #   name                       = "SSH"
@@ -30,9 +29,9 @@ data "azurerm_subnet" "my_terraform_subnet" {
 
 # Create network interface
 resource "azurerm_network_interface" "my_terraform_nic" {
-  name                = "ethanNIC"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
+  name                = "ethanWinNIC"
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
 
   ip_configuration {
     name                          = "my_nic_configuration"
@@ -69,13 +68,13 @@ resource "azurerm_key_vault_secret" "my_terraform_vmpassword" {
 # Create virtual machine
 resource "azurerm_windows_virtual_machine" "my_terraform_vm" {
   name                  = "ethanwindowsvm"
-  location              = azurerm_resource_group.rg.location
-  resource_group_name   = azurerm_resource_group.rg.name
+  location              = data.azurerm_resource_group.rg.location
+  resource_group_name   = data.azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.my_terraform_nic.id]
   size                  = "Standard_F2"
 
   os_disk {
-    name                 = "ethanOsDisk"
+    name                 = "ethanWinOsDisk"
     caching              = "ReadWrite"
     storage_account_type = "Premium_LRS"
   }
