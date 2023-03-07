@@ -4,7 +4,7 @@ data "azurerm_resource_group" "rg"{
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "my_terraform_nsg" {
-  name                = "ethanNetworkSecurityGroup"
+  name                = "ethanWinNetworkSecurityGroup"
   location            = data.azurerm_resource_group.rg.location
   resource_group_name = data.azurerm_resource_group.rg.name
 
@@ -71,7 +71,7 @@ resource "azurerm_windows_virtual_machine" "my_terraform_vm" {
   location              = data.azurerm_resource_group.rg.location
   resource_group_name   = data.azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.my_terraform_nic.id]
-  size                  = "Standard_F2"
+  size                  = "Standard_DS1_v2"
 
   os_disk {
     name                 = "ethanWinOsDisk"
