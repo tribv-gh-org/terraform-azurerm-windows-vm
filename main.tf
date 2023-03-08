@@ -26,6 +26,11 @@ data "azurerm_subnet" "my_terraform_subnet" {
   virtual_network_name = "ethan-vnet"
   resource_group_name  = "rg-infrarg-lz-2023"
 }
+data "azurerm_subnet" "my_terraform_subnet03" {
+  name                 = "ethan-sbn03"
+  virtual_network_name = "ethan-vnet"
+  resource_group_name  = "rg-infrarg-lz-2023"
+}
 
 # Create network interface
 resource "azurerm_network_interface" "my_terraform_nic" {
@@ -36,6 +41,17 @@ resource "azurerm_network_interface" "my_terraform_nic" {
   ip_configuration {
     name                          = "my_nic_configuration"
     subnet_id                     = data.azurerm_subnet.my_terraform_subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+resource "azurerm_network_interface" "my_terraform_nic03" {
+  name                = "ethanWinNIC03"
+  location            = data.azurerm_resource_group.rg.location
+  resource_group_name = data.azurerm_resource_group.rg.name
+
+  ip_configuration {
+    name                          = "my_nic_configuration"
+    subnet_id                     = data.azurerm_subnet.my_terraform_subnet03.id
     private_ip_address_allocation = "Dynamic"
   }
 }
@@ -70,7 +86,7 @@ resource "azurerm_windows_virtual_machine" "my_terraform_vm" {
   name                  = "ethanwindowsvm"
   location              = data.azurerm_resource_group.rg.location
   resource_group_name   = data.azurerm_resource_group.rg.name
-  network_interface_ids = [azurerm_network_interface.my_terraform_nic.id]
+  network_interface_ids = [azurerm_network_interface.my_terraform_nic.id,azurerm_network_interface.my_terraform_nic03.id]
   size                  = "Standard_DS1_v2"
 
   os_disk {
