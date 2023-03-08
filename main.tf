@@ -22,7 +22,7 @@ resource "azurerm_network_security_group" "my_terraform_nsg" {
 }
 
 data "azurerm_subnet" "my_terraform_subnet" {
-  name                 = "ethan-sbn01"
+  name                 = "ethan-sbn02"
   virtual_network_name = "ethan-vnet"
   resource_group_name  = "rg-infrarg-lz-2023"
 }
