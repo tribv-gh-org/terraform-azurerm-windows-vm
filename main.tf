@@ -87,7 +87,7 @@ resource "azurerm_windows_virtual_machine" "my_terraform_vm" {
   location              = data.azurerm_resource_group.rg.location
   resource_group_name   = data.azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.my_terraform_nic.id,azurerm_network_interface.my_terraform_nic01.id]
-  size                  = "Standard_DS1_v2"
+  size                  = "Standard_D2s_v3"
 
   os_disk {
     name                 = "ethanWinOsDisk"
@@ -98,11 +98,11 @@ resource "azurerm_windows_virtual_machine" "my_terraform_vm" {
   source_image_reference {
     publisher = "MicrosoftWindowsServer"
     offer     = "WindowsServer"
-    sku       = "2016-Datacenter"
+    sku       = "2022-Datacenter"
     version   = "latest"
   }
 
   computer_name       = "ethanwindowsvm"
-  admin_username      = "adminuser"
+  admin_username      = "ethan"
   admin_password      = azurerm_key_vault_secret.my_terraform_vmpassword.value
 }
